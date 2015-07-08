@@ -39,107 +39,106 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
     TDirectory *rootdir = gDirectory->GetDirectory("Rint:");
 
     // mLL, genps
-    TH1F *mLL_genps_o50 = new TH1F("mLL_genps_o50", "Example histogram", 300,0,150);
+    TH1F *mLL_genps_o50 = new TH1F("mLL_genps_o50", "", 300,0,150);
     mLL_genps_o50->SetDirectory(rootdir);
-    TH1F *mLL_genps_u50 = new TH1F("mLL_genps_u50", "Example histogram", 300,0,150);
+    TH1F *mLL_genps_u50 = new TH1F("mLL_genps_u50", "", 300,0,150);
     mLL_genps_u50->SetDirectory(rootdir);
 
     // mLL, genps, noscale
-    TH1F *mLL_genps_noscale_o50 = new TH1F("mLL_genps_noscale_o50", "Example histogram", 300,0,150);
+    TH1F *mLL_genps_noscale_o50 = new TH1F("mLL_genps_noscale_o50", "", 300,0,150);
     mLL_genps_noscale_o50->SetDirectory(rootdir);
-    TH1F *mLL_genps_noscale_u50 = new TH1F("mLL_genps_noscale_u50", "Example histogram", 300,0,150);
+    TH1F *mLL_genps_noscale_u50 = new TH1F("mLL_genps_noscale_u50", "", 300,0,150);
     mLL_genps_noscale_u50->SetDirectory(rootdir);
 
     // mLL, reco, all hyps
-    TH1F *mLL_reco_all_o50 = new TH1F("mLL_reco_all_o50", "Example histogram", 300,0,150);
+    TH1F *mLL_reco_all_o50 = new TH1F("mLL_reco_all_o50", "", 300,0,150);
     mLL_reco_all_o50->SetDirectory(rootdir);
-    TH1F *mLL_reco_all_u50 = new TH1F("mLL_reco_all_u50", "Example histogram", 300,0,150);
+    TH1F *mLL_reco_all_u50 = new TH1F("mLL_reco_all_u50", "", 300,0,150);
     mLL_reco_all_u50->SetDirectory(rootdir);
 
     // mLL, reco, best hyp
-    TH1F *mLL_reco_best_o50 = new TH1F("mLL_reco_best_o50", "Example histogram", 300,0,150);
+    TH1F *mLL_reco_best_o50 = new TH1F("mLL_reco_best_o50", "", 300,0,150);
     mLL_reco_best_o50->SetDirectory(rootdir);
-    TH1F *mLL_reco_best_u50 = new TH1F("mLL_reco_best_u50", "Example histogram", 300,0,150);
+    TH1F *mLL_reco_best_u50 = new TH1F("mLL_reco_best_u50", "", 300,0,150);
     mLL_reco_best_u50->SetDirectory(rootdir);
 
     // mLL, reco, pT>20
-    TH1F *mLL_reco_pT20_o50 = new TH1F("mLL_reco_pT20_o50", "Example histogram", 300,0,150);
+    TH1F *mLL_reco_pT20_o50 = new TH1F("mLL_reco_pT20_o50", "", 300,0,150);
     mLL_reco_pT20_o50->SetDirectory(rootdir);
-    TH1F *mLL_reco_pT20_u50 = new TH1F("mLL_reco_pT20_u50", "Example histogram", 300,0,150);
+    TH1F *mLL_reco_pT20_u50 = new TH1F("mLL_reco_pT20_u50", "", 300,0,150);
     mLL_reco_pT20_u50->SetDirectory(rootdir);
 
     // mLL, reco, pT>20, OS
-    TH1F *mLL_reco_pT20_OS_o50 = new TH1F("mLL_reco_pT20_OS_o50", "Example histogram", 300,0,150);
+    TH1F *mLL_reco_pT20_OS_o50 = new TH1F("mLL_reco_pT20_OS_o50", "", 300,0,150);
     mLL_reco_pT20_OS_o50->SetDirectory(rootdir);
-    TH1F *mLL_reco_pT20_OS_u50 = new TH1F("mLL_reco_pT20_OS_u50", "Example histogram", 300,0,150);
+    TH1F *mLL_reco_pT20_OS_u50 = new TH1F("mLL_reco_pT20_OS_u50", "", 300,0,150);
     mLL_reco_pT20_OS_u50->SetDirectory(rootdir);
 
     // mLL, reco, pT>20, besthyp
-    TH1F *mLL_reco_pT20_OS_best_o50 = new TH1F("mLL_reco_pT20_OS_best_o50", "Example histogram", 300,0,150);
+    TH1F *mLL_reco_pT20_OS_best_o50 = new TH1F("mLL_reco_pT20_OS_best_o50", "", 300,0,150);
     mLL_reco_pT20_OS_best_o50->SetDirectory(rootdir);
-    TH1F *mLL_reco_pT20_OS_best_u50 = new TH1F("mLL_reco_pT20_OS_best_u50", "Example histogram", 300,0,150);
+    TH1F *mLL_reco_pT20_OS_best_u50 = new TH1F("mLL_reco_pT20_OS_best_u50", "", 300,0,150);
     mLL_reco_pT20_OS_best_u50->SetDirectory(rootdir);
 
     // pfmet
-    TH1F *pfmet_o50 = new TH1F("pfmet_o50", "Example histogram", 200,0,150);
+    TH1F *pfmet_o50 = new TH1F("pfmet_o50", "", 200,0,150);
     pfmet_o50->SetDirectory(rootdir);
-    TH1F *pfmet_u50 = new TH1F("pfmet_u50", "Example histogram", 200,0,150);
+    TH1F *pfmet_u50 = new TH1F("pfmet_u50", "", 200,0,150);
     pfmet_u50->SetDirectory(rootdir);
 
     // njets
-    TH1F *njets_o50 = new TH1F("njets_o50", "Example histogram", 10,-0.5,9.5);
+    TH1F *njets_o50 = new TH1F("njets_o50", "", 10,-0.5,9.5);
     njets_o50->SetDirectory(rootdir);
-    TH1F *njets_u50 = new TH1F("njets_u50", "Example histogram", 10,-0.5,9.5);
+    TH1F *njets_u50 = new TH1F("njets_u50", "", 10,-0.5,9.5);
     njets_u50->SetDirectory(rootdir);
 
     // njets_jetid
-    TH1F *njets_jetid_o50 = new TH1F("njets_jetid_o50", "Example histogram", 10,-0.5,9.5);
+    TH1F *njets_jetid_o50 = new TH1F("njets_jetid_o50", "", 10,-0.5,9.5);
     njets_jetid_o50->SetDirectory(rootdir);
-    TH1F *njets_jetid_u50 = new TH1F("njets_jetid_u50", "Example histogram", 10,-0.5,9.5);
+    TH1F *njets_jetid_u50 = new TH1F("njets_jetid_u50", "", 10,-0.5,9.5);
     njets_jetid_u50->SetDirectory(rootdir);
 
     // H_T (scalar sum jet momenta)
-    TH1F *ht_o50 = new TH1F("ht_o50", "Example histogram", 200,0,300);
+    TH1F *ht_o50 = new TH1F("ht_o50", "", 200,0,300);
     ht_o50->SetDirectory(rootdir);
-    TH1F *ht_u50 = new TH1F("ht_u50", "Example histogram", 200,0,300);
+    TH1F *ht_u50 = new TH1F("ht_u50", "", 200,0,300);
     ht_u50->SetDirectory(rootdir);
 
     // jet pT
-    TH1F *jetpt_o50 = new TH1F("jetpt_o50", "Example histogram", 200,0,300);
+    TH1F *jetpt_o50 = new TH1F("jetpt_o50", "", 200,0,300);
     jetpt_o50->SetDirectory(rootdir);
-    TH1F *jetpt_u50 = new TH1F("jetpt_u50", "Example histogram", 200,0,300);
+    TH1F *jetpt_u50 = new TH1F("jetpt_u50", "", 200,0,300);
     jetpt_u50->SetDirectory(rootdir);
 
     // lep pT
-    TH1F *leppt_o50 = new TH1F("leppt_o50", "Example histogram", 300,0,200);
+    TH1F *leppt_o50 = new TH1F("leppt_o50", "", 300,0,200);
     leppt_o50->SetDirectory(rootdir);
-    TH1F *leppt_u50 = new TH1F("leppt_u50", "Example histogram", 300,0,200);
+    TH1F *leppt_u50 = new TH1F("leppt_u50", "", 300,0,200);
     leppt_u50->SetDirectory(rootdir);
 
     // lep eta
-    TH1F *lep_eta_o50 = new TH1F("lep_eta_o50", "Example histogram", 150,-3,3);
+    TH1F *lep_eta_o50 = new TH1F("lep_eta_o50", "", 150,-3,3);
     lep_eta_o50->SetDirectory(rootdir);
-    TH1F *lep_eta_u50 = new TH1F("lep_eta_u50", "Example histogram", 150,-3,3);
+    TH1F *lep_eta_u50 = new TH1F("lep_eta_u50", "", 150,-3,3);
     lep_eta_u50->SetDirectory(rootdir);
 
     // lep phi
-    TH1F *lep_phi_o50 = new TH1F("lep_phi_o50", "Example histogram", 150,-3.4,3.4);
+    TH1F *lep_phi_o50 = new TH1F("lep_phi_o50", "", 150,-3.4,3.4);
     lep_phi_o50->SetDirectory(rootdir);
-    TH1F *lep_phi_u50 = new TH1F("lep_phi_u50", "Example histogram", 150,-3.4,3.4);
+    TH1F *lep_phi_u50 = new TH1F("lep_phi_u50", "", 150,-3.4,3.4);
     lep_phi_u50->SetDirectory(rootdir);
 
     // nBtags
-    TH1F *nbtags_o50 = new TH1F("nbtags_o50", "Example histogram", 4,-0.5,3.5);
+    TH1F *nbtags_o50 = new TH1F("nbtags_o50", "", 4,-0.5,3.5);
     nbtags_o50->SetDirectory(rootdir);
-    TH1F *nbtags_u50 = new TH1F("nbtags_u50", "Example histogram", 4,-0.5,3.5);
+    TH1F *nbtags_u50 = new TH1F("nbtags_u50", "", 4,-0.5,3.5);
     nbtags_u50->SetDirectory(rootdir);
 
     // bjetpT
-    TH1F *bjetpt_o50 = new TH1F("bjetpt_o50", "Example histogram", 200,0,100);
+    TH1F *bjetpt_o50 = new TH1F("bjetpt_o50", "", 200,0,100);
     bjetpt_o50->SetDirectory(rootdir);
-    TH1F *bjetpt_u50 = new TH1F("bjetpt_u50", "Example histogram", 200,0,100);
+    TH1F *bjetpt_u50 = new TH1F("bjetpt_u50", "", 200,0,100);
     bjetpt_u50->SetDirectory(rootdir);
-
   
 
     // Loop over events to Analyze
@@ -147,38 +146,38 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
     unsigned int nEventsChain = chain->GetEntries();
     if( nEvents >= 0 ) nEventsChain = nEvents;
     TObjArray *listOfFiles = chain->GetListOfFiles();
-    int nFiles = chain->GetNtrees();
     TIter fileIter(listOfFiles);
     TFile *currentFile = 0;
-    int fileCounter = -1;
 
     // get the number of events in each category (U50/O50)
     int loadedU50events = 0;
     int loadedO50events = 0;
+    int nFilesOver50 = 0;
     while ( (currentFile = (TFile*)fileIter.Next()) ) {
-        fileCounter++;
-        bool isU50 = (fileCounter >= nFiles/2);
+
+        bool isO50 = (strstr(currentFile->GetTitle(), "M-10") == NULL);  
 
         // Get File Content
         TFile *file = new TFile( currentFile->GetTitle() );
         TTree *tree = (TTree*)file->Get("Events");
-        if(isU50)
-            loadedU50events += tree->GetEntries();
-        else
+        if(isO50){
             loadedO50events += tree->GetEntries();
+            nFilesOver50++;
+        }else{
+            loadedU50events += tree->GetEntries();
+        }
     }
 
-    fileIter.Reset();
-    fileCounter = -1;
+    cout << "Number of O50 files: " << nFilesOver50 << "\nNumber of U50 files: " << chain->GetNtrees() - nFilesOver50 << endl;
 
-    /* fileCounter = 0 : over 50 data
-       fileCounter = 1 : under 50 data  */
+    fileIter.Reset();
+    int fileCounter = -1;
 
     // File Loop
     while ( (currentFile = (TFile*)fileIter.Next()) ) {
 
         fileCounter++;
-        int isU50 = (fileCounter >= nFiles/2);
+        int isU50 = (fileCounter >= nFilesOver50);
 
         // Get File Content
         TFile *file = new TFile( currentFile->GetTitle() );
@@ -214,6 +213,49 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
 
             /******** Analysis Code *********/
 
+            // lep pT, eta, phi. these come first b/c they do not have any cuts
+
+            int nElecTotal = els_p4().size();
+            int nMuonTotal = mus_p4().size();
+            for(int i=0; i<nElecTotal; i++){
+                if(!isU50){
+                    leppt_o50->Fill(els_p4()[i].Pt(), scale);
+                }else{
+                    leppt_u50->Fill(els_p4()[i].Pt(), scale);
+                }
+                                
+                if(els_p4()[i].Pt() < 20)
+                    continue;
+
+                if(!isU50){
+                    lep_eta_o50->Fill(els_p4()[i].Eta(), scale);
+                    lep_phi_o50->Fill(els_p4()[i].Phi(), scale);
+                }else{
+                    lep_eta_u50->Fill(els_p4()[i].Eta(), scale);
+                    lep_phi_u50->Fill(els_p4()[i].Phi(), scale);
+                }                               
+            }
+            for(int i=0; i<nMuonTotal; i++){
+                
+                if(!isU50){
+                    leppt_o50->Fill(mus_p4()[i].Pt(), scale);
+                }else{
+                    leppt_u50->Fill(mus_p4()[i].Pt(), scale);
+                }
+                
+                if(mus_p4()[i].Pt() < 20)
+                    continue;
+
+                if(!isU50){
+                    lep_eta_o50->Fill(mus_p4()[i].Eta(), scale);
+                    lep_phi_o50->Fill(mus_p4()[i].Phi(), scale);
+                }else{
+                    lep_eta_u50->Fill(mus_p4()[i].Eta(), scale);
+                    lep_phi_u50->Fill(mus_p4()[i].Phi(), scale);
+                }                               
+
+            }
+
             // dilepton invariant mass
 
             // genps
@@ -229,16 +271,15 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
             for(unsigned int i=0; i<good.size(); i++){
                 for(unsigned int j=i+1; j<good.size(); j++){
                     double mass = (genps_p4()[good[i]]+genps_p4()[good[j]]).M();
-                    if(isU50==0){
+                    if(!isU50){
                         mLL_genps_o50->Fill(mass, scale);
                         mLL_genps_noscale_o50->Fill(mass, 1);                        
-                    }else if(isU50==1){
+                    }else{
                         mLL_genps_u50->Fill(mass, scale);
                         mLL_genps_noscale_u50->Fill(mass, 1);
                     }
                 }
             }
-
 
             // reco (hypotheses)
             int nhyp = hyp_p4().size();
@@ -247,9 +288,9 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
             int besthyp_cuts = -1;
             double bestpT_cuts = 0;
             for(int i = 0; i < nhyp; i++){
-                if(isU50==0)
+                if(!isU50)
                     mLL_reco_all_o50->Fill((hyp_ll_p4()[i]+hyp_lt_p4()[i]).M(), scale);
-                if(isU50==1)
+                else
                     mLL_reco_all_u50->Fill((hyp_ll_p4()[i]+hyp_lt_p4()[i]).M(), scale);
                
                 double totalpT = hyp_ll_p4()[i].Pt() + hyp_lt_p4()[i].Pt();
@@ -262,18 +303,18 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
                 if(hyp_ll_p4()[i].Pt()<20 || hyp_lt_p4()[i].Pt()<20)
                     continue;
                 
-                if(isU50==0)
+                if(!isU50)
                     mLL_reco_pT20_o50->Fill((hyp_ll_p4()[i]+hyp_lt_p4()[i]).M(), scale);
-                if(isU50==1)
+                else
                     mLL_reco_pT20_u50->Fill((hyp_ll_p4()[i]+hyp_lt_p4()[i]).M(), scale);
                 
                 // opposite sign
                 if(hyp_ll_charge()[i] + hyp_lt_charge()[i] != 0)
                     continue;
                 
-                if(isU50==0)
+                if(!isU50)
                     mLL_reco_pT20_OS_o50->Fill((hyp_ll_p4()[i]+hyp_lt_p4()[i]).M(), scale);
-                if(isU50==1)
+                else
                     mLL_reco_pT20_OS_u50->Fill((hyp_ll_p4()[i]+hyp_lt_p4()[i]).M(), scale);               
 
                 
@@ -292,26 +333,27 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
                 }
             }
             if(besthyp_cuts > -1){
-                if(isU50==0)
+                if(!isU50)
                     mLL_reco_pT20_OS_best_o50->Fill((hyp_ll_p4()[besthyp_cuts]+hyp_lt_p4()[besthyp_cuts]).M(), scale);
-                if(isU50==1)
+                else
                     mLL_reco_pT20_OS_best_u50->Fill((hyp_ll_p4()[besthyp_cuts]+hyp_lt_p4()[besthyp_cuts]).M(), scale);
             } 
             if(besthyp_nocuts > -1){
-                if(isU50==0)
+                if(!isU50)
                     mLL_reco_best_o50->Fill((hyp_ll_p4()[besthyp_nocuts]+hyp_lt_p4()[besthyp_nocuts]).M(), scale);
-                if(isU50==1)
+                else
                     mLL_reco_best_u50->Fill((hyp_ll_p4()[besthyp_nocuts]+hyp_lt_p4()[besthyp_nocuts]).M(), scale);
             } 
 
-            // choose a best hypothesis
-            int besthyp = (besthyp_cuts != -1) ? besthyp_cuts : besthyp_nocuts;
+            // no good Z-candidate pair of leptons was found
+            if(besthyp_cuts == -1)
+                continue;
 
             // pfmet
 
-            if(isU50==0)
+            if(!isU50)
                 pfmet_o50->Fill(evt_pfmet(),scale);
-            if(isU50==1)
+            else
                 pfmet_u50->Fill(evt_pfmet(),scale);
 
             // njets, H_T, jet pT, nbtags, bjetpT
@@ -325,20 +367,16 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
             for(int i =0; i<njetstotal; i++){
 
                 // reject jet if it is too close to one of the Z leptons
-                if(besthyp_cuts == -1){
-                    continue;
-                }else{
-                    double jetEta = pfjets_p4()[i].Eta();
-                    double jetPhi = pfjets_p4()[i].Phi();
-                    double l1Eta = hyp_ll_p4()[besthyp].Eta();
-                    double l2Eta = hyp_lt_p4()[besthyp].Eta();
-                    double l1Phi = hyp_ll_p4()[besthyp].Phi();
-                    double l2Phi = hyp_lt_p4()[besthyp].Phi();
-                    double dR1 = sqrt((jetEta-l1Eta)*(jetEta-l1Eta)+(jetPhi-l1Phi)*(jetPhi-l1Phi));
-                    double dR2 = sqrt((jetEta-l2Eta)*(jetEta-l2Eta)+(jetPhi-l2Phi)*(jetPhi-l2Phi));
-                    if(dR1 < 0.4 || dR2 < 0.4)
-                        continue;
-                }
+                double jetEta = pfjets_p4()[i].Eta();
+                double jetPhi = pfjets_p4()[i].Phi();
+                double l1Eta = hyp_ll_p4()[besthyp_cuts].Eta();
+                double l2Eta = hyp_lt_p4()[besthyp_cuts].Eta();
+                double l1Phi = hyp_ll_p4()[besthyp_cuts].Phi();
+                double l2Phi = hyp_lt_p4()[besthyp_cuts].Phi();
+                double dR1 = sqrt((jetEta-l1Eta)*(jetEta-l1Eta)+(jetPhi-l1Phi)*(jetPhi-l1Phi));
+                double dR2 = sqrt((jetEta-l2Eta)*(jetEta-l2Eta)+(jetPhi-l2Phi)*(jetPhi-l2Phi));
+                if(dR1 < 0.4 || dR2 < 0.4)
+                    continue;                
 
                 bool isBtag = (pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag()[i] > 0.814);                
 
@@ -352,74 +390,29 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
                     if(isBtag)
                         nbtags++;
                 }
-                if(isU50==0){
+                if(!isU50){
                     jetpt_o50->Fill(pfjets_p4()[i].Pt(), scale);
                     if(isBtag)
                         bjetpt_o50->Fill(pfjets_p4()[i].Pt(), scale);                        
-                }else if(isU50==1){
+                }else{
                     jetpt_u50->Fill(pfjets_p4()[i].Pt(), scale);
                     if(isBtag)
                         bjetpt_u50->Fill(pfjets_p4()[i].Pt(), scale);                        
                 }
             }
 
-            if(besthyp_cuts != -1){
-                if(isU50==0){
-                    njets_o50->Fill(ngoodjets,scale);                
-                    njets_jetid_o50->Fill(ngoodidjets,scale);                
-                    nbtags_o50->Fill(nbtags,scale);                
-                    if(ngoodjets > 0)
-                        ht_o50->Fill(h_t,scale);
-                }else if(isU50==1){
-                    njets_u50->Fill(ngoodjets,scale);
-                    njets_jetid_u50->Fill(ngoodidjets,scale);
-                    nbtags_u50->Fill(nbtags,scale);
-                    if(ngoodjets > 0)
-                        ht_u50->Fill(h_t,scale);
-                }
-            }
-
-            // lep pT, eta, phi
-
-            int nElecTotal = els_p4().size();
-            int nMuonTotal = mus_p4().size();
-            for(int i=0; i<nElecTotal; i++){
-                if(isU50==0){
-                    leppt_o50->Fill(els_p4()[i].Pt(), scale);
-                }else if(isU50==1){
-                    leppt_u50->Fill(els_p4()[i].Pt(), scale);
-                }
-                                
-                if(els_p4()[i].Pt() < 20)
-                    continue;
-
-                if(isU50==0){
-                    lep_eta_o50->Fill(els_p4()[i].Eta(), scale);
-                    lep_phi_o50->Fill(els_p4()[i].Phi(), scale);
-                }else if(isU50==1){
-                    lep_eta_u50->Fill(els_p4()[i].Eta(), scale);
-                    lep_phi_u50->Fill(els_p4()[i].Phi(), scale);
-                }                               
-            }
-            for(int i=0; i<nMuonTotal; i++){
-                
-                if(isU50==0){
-                    leppt_o50->Fill(mus_p4()[i].Pt(), scale);
-                }else if(isU50==1){
-                    leppt_u50->Fill(mus_p4()[i].Pt(), scale);
-                }
-                
-                if(mus_p4()[i].Pt() < 20)
-                    continue;
-
-                if(isU50==0){
-                    lep_eta_o50->Fill(mus_p4()[i].Eta(), scale);
-                    lep_phi_o50->Fill(mus_p4()[i].Phi(), scale);
-                }else if(isU50==1){
-                    lep_eta_u50->Fill(mus_p4()[i].Eta(), scale);
-                    lep_phi_u50->Fill(mus_p4()[i].Phi(), scale);
-                }                               
-
+            if(!isU50){
+                njets_o50->Fill(ngoodjets,scale);                
+                njets_jetid_o50->Fill(ngoodidjets,scale);                
+                nbtags_o50->Fill(nbtags,scale);                
+                if(ngoodjets > 0)
+                    ht_o50->Fill(h_t,scale);
+            }else{
+                njets_u50->Fill(ngoodjets,scale);
+                njets_jetid_u50->Fill(ngoodidjets,scale);
+                nbtags_u50->Fill(nbtags,scale);
+                if(ngoodjets > 0)
+                    ht_u50->Fill(h_t,scale);
             }
 
         }
