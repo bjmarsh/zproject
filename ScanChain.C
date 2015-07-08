@@ -336,7 +336,7 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
                     double l2Phi = hyp_lt_p4()[besthyp].Phi();
                     double dR1 = sqrt((jetEta-l1Eta)*(jetEta-l1Eta)+(jetPhi-l1Phi)*(jetPhi-l1Phi));
                     double dR2 = sqrt((jetEta-l2Eta)*(jetEta-l2Eta)+(jetPhi-l2Phi)*(jetPhi-l2Phi));
-                    if(dR1 < 0.04 || dR2 < 0.04)
+                    if(dR1 < 0.4 || dR2 < 0.4)
                         continue;
                 }
 
