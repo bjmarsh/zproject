@@ -27,6 +27,27 @@
 using namespace std;
 using namespace tas;
 
+int getFileType(const char* fname){
+    // 0 = drell-yan mLL<50, 1 = drell-yan mLL>50, 2 = ttbar
+
+    int filetype = -1;
+
+    if (strstr(fname, "DYJets") != NULL && strstr(fname, "M-10") != NULL)
+        filetype = 0;
+    else if (strstr(fname, "DYJets") != NULL && strstr(fname, "M-50") != NULL)
+        filetype = 1;
+    else if (strstr(fname, "TTJets") != NULL)
+        filetype = 2;
+
+    if(filetype == -1){
+        cout << "ERROR: unrecognized data file " << fname << endl;
+        return 0;
+    }
+
+    return filetype;
+    
+}
+
 int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
 
     // Benchmark
@@ -55,6 +76,8 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
     mLL_reco_all_o50->SetDirectory(rootdir);
     TH1F *mLL_reco_all_u50 = new TH1F("mLL_reco_all_u50", "", 300,0,150);
     mLL_reco_all_u50->SetDirectory(rootdir);
+    TH1F *mLL_reco_all_tt2 = new TH1F("mLL_reco_all_tt2", "", 300,0,150);
+    mLL_reco_all_tt2->SetDirectory(rootdir);
 
     // mLL, reco, best hyp
     TH1F *mLL_reco_best_o50 = new TH1F("mLL_reco_best_o50", "", 300,0,150);
@@ -79,66 +102,88 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
     mLL_reco_pT20_OS_best_o50->SetDirectory(rootdir);
     TH1F *mLL_reco_pT20_OS_best_u50 = new TH1F("mLL_reco_pT20_OS_best_u50", "", 300,0,150);
     mLL_reco_pT20_OS_best_u50->SetDirectory(rootdir);
+    TH1F *mLL_reco_pT20_OS_best_tt2 = new TH1F("mLL_reco_pT20_OS_best_tt2", "", 300,0,150);
+    mLL_reco_pT20_OS_best_tt2->SetDirectory(rootdir);
 
     // pfmet
     TH1F *pfmet_o50 = new TH1F("pfmet_o50", "", 200,0,150);
     pfmet_o50->SetDirectory(rootdir);
     TH1F *pfmet_u50 = new TH1F("pfmet_u50", "", 200,0,150);
     pfmet_u50->SetDirectory(rootdir);
+    TH1F *pfmet_tt2 = new TH1F("pfmet_tt2", "", 200,0,150);
+    pfmet_tt2->SetDirectory(rootdir);
 
     // njets
     TH1F *njets_o50 = new TH1F("njets_o50", "", 10,-0.5,9.5);
     njets_o50->SetDirectory(rootdir);
     TH1F *njets_u50 = new TH1F("njets_u50", "", 10,-0.5,9.5);
     njets_u50->SetDirectory(rootdir);
+    TH1F *njets_tt2 = new TH1F("njets_tt2", "", 10,-0.5,9.5);
+    njets_tt2->SetDirectory(rootdir);
 
     // njets_jetid
     TH1F *njets_jetid_o50 = new TH1F("njets_jetid_o50", "", 10,-0.5,9.5);
     njets_jetid_o50->SetDirectory(rootdir);
     TH1F *njets_jetid_u50 = new TH1F("njets_jetid_u50", "", 10,-0.5,9.5);
     njets_jetid_u50->SetDirectory(rootdir);
+    TH1F *njets_jetid_tt2 = new TH1F("njets_jetid_tt2", "", 10,-0.5,9.5);
+    njets_jetid_tt2->SetDirectory(rootdir);
 
     // H_T (scalar sum jet momenta)
     TH1F *ht_o50 = new TH1F("ht_o50", "", 200,0,300);
     ht_o50->SetDirectory(rootdir);
     TH1F *ht_u50 = new TH1F("ht_u50", "", 200,0,300);
     ht_u50->SetDirectory(rootdir);
+    TH1F *ht_tt2 = new TH1F("ht_tt2", "", 200,0,300);
+    ht_tt2->SetDirectory(rootdir);
 
     // jet pT
     TH1F *jetpt_o50 = new TH1F("jetpt_o50", "", 200,0,300);
     jetpt_o50->SetDirectory(rootdir);
     TH1F *jetpt_u50 = new TH1F("jetpt_u50", "", 200,0,300);
     jetpt_u50->SetDirectory(rootdir);
+    TH1F *jetpt_tt2 = new TH1F("jetpt_tt2", "", 200,0,300);
+    jetpt_tt2->SetDirectory(rootdir);
 
     // lep pT
     TH1F *leppt_o50 = new TH1F("leppt_o50", "", 300,0,200);
     leppt_o50->SetDirectory(rootdir);
     TH1F *leppt_u50 = new TH1F("leppt_u50", "", 300,0,200);
     leppt_u50->SetDirectory(rootdir);
+    TH1F *leppt_tt = new TH1F("leppt_tt", "", 300,0,200);
+    leppt_tt->SetDirectory(rootdir);
 
     // lep eta
     TH1F *lep_eta_o50 = new TH1F("lep_eta_o50", "", 150,-3,3);
     lep_eta_o50->SetDirectory(rootdir);
     TH1F *lep_eta_u50 = new TH1F("lep_eta_u50", "", 150,-3,3);
     lep_eta_u50->SetDirectory(rootdir);
+    TH1F *lep_eta_tt = new TH1F("lep_eta_tt", "", 150,-3,3);
+    lep_eta_tt->SetDirectory(rootdir);
 
     // lep phi
     TH1F *lep_phi_o50 = new TH1F("lep_phi_o50", "", 150,-3.4,3.4);
     lep_phi_o50->SetDirectory(rootdir);
     TH1F *lep_phi_u50 = new TH1F("lep_phi_u50", "", 150,-3.4,3.4);
     lep_phi_u50->SetDirectory(rootdir);
+    TH1F *lep_phi_tt = new TH1F("lep_phi_tt", "", 150,-3.4,3.4);
+    lep_phi_tt->SetDirectory(rootdir);
 
     // nBtags
     TH1F *nbtags_o50 = new TH1F("nbtags_o50", "", 4,-0.5,3.5);
     nbtags_o50->SetDirectory(rootdir);
     TH1F *nbtags_u50 = new TH1F("nbtags_u50", "", 4,-0.5,3.5);
     nbtags_u50->SetDirectory(rootdir);
+    TH1F *nbtags_tt2 = new TH1F("nbtags_tt2", "", 4,-0.5,3.5);
+    nbtags_tt2->SetDirectory(rootdir);
 
     // bjetpT
     TH1F *bjetpt_o50 = new TH1F("bjetpt_o50", "", 200,0,100);
     bjetpt_o50->SetDirectory(rootdir);
     TH1F *bjetpt_u50 = new TH1F("bjetpt_u50", "", 200,0,100);
     bjetpt_u50->SetDirectory(rootdir);
+    TH1F *bjetpt_tt2 = new TH1F("bjetpt_tt2", "", 200,0,100);
+    bjetpt_tt2->SetDirectory(rootdir);
   
 
     // Loop over events to Analyze
@@ -149,26 +194,33 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
     TIter fileIter(listOfFiles);
     TFile *currentFile = 0;
 
-    // get the number of events in each category (U50/O50)
+    // total events in each sample
+    int totalO50events = 19925500;
+    int totalU50events = 14820919;
+    int totalTTBevents = 4992231;
+
+    // get the number of events in each category (U50/O50/TTB) (for proper scaling)
     int loadedU50events = 0;
     int loadedO50events = 0;
-    int nFilesOver50 = 0;
+    int loadedTTBevents = 0;
     while ( (currentFile = (TFile*)fileIter.Next()) ) {
-
-        bool isO50 = (strstr(currentFile->GetTitle(), "M-10") == NULL);  
 
         // Get File Content
         TFile *file = new TFile( currentFile->GetTitle() );
         TTree *tree = (TTree*)file->Get("Events");
-        if(isO50){
-            loadedO50events += tree->GetEntries();
-            nFilesOver50++;
-        }else{
+
+        int fileType = getFileType(currentFile->GetTitle());
+
+        cout << currentFile->GetTitle() << " " << fileType << endl;
+
+        if(fileType==0){
             loadedU50events += tree->GetEntries();
+        }else if(fileType==1){
+            loadedO50events += tree->GetEntries();
+        }else if(fileType==2){
+            loadedTTBevents += tree->GetEntries();
         }
     }
-
-    cout << "Number of O50 files: " << nFilesOver50 << "\nNumber of U50 files: " << chain->GetNtrees() - nFilesOver50 << endl;
 
     fileIter.Reset();
     int fileCounter = -1;
@@ -177,7 +229,8 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
     while ( (currentFile = (TFile*)fileIter.Next()) ) {
 
         fileCounter++;
-        int isU50 = (fileCounter >= nFilesOver50);
+
+        int fileType = getFileType(currentFile->GetTitle());
 
         // Get File Content
         TFile *file = new TFile( currentFile->GetTitle() );
@@ -185,10 +238,6 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
         if(fast) TTreeCache::SetLearnEntries(10);
         if(fast) tree->SetCacheSize(128*1024*1024);
         cms3.Init(tree);
-    
-        // total events in each sample
-        int totalO50events = 19925500;
-        int totalU50events = 14820919;
 
         // Loop over Events in current file
         if( nEventsTotal >= nEventsChain ) continue;
@@ -202,11 +251,13 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
             ++nEventsTotal;
 
             // get the proper scale factors
-            double scale;
-            if(!isU50)
-                scale = evt_scale1fb()*10*totalO50events/loadedO50events;
-            if(isU50)
+            double scale = 0;
+            if(fileType==0)
                 scale = evt_scale1fb()*10*totalU50events/loadedU50events;
+            if(fileType==1)
+                scale = evt_scale1fb()*10*totalO50events/loadedO50events;
+            if(fileType==2)
+                scale = evt_scale1fb()*10*totalTTBevents/loadedTTBevents;
     
             // Progress
             CMS3::progress( nEventsTotal, nEventsChain );            
@@ -218,40 +269,50 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
             int nElecTotal = els_p4().size();
             int nMuonTotal = mus_p4().size();
             for(int i=0; i<nElecTotal; i++){
-                if(!isU50){
+                if(fileType==1){
                     leppt_o50->Fill(els_p4()[i].Pt(), scale);
-                }else{
+                }else if(fileType==0){
                     leppt_u50->Fill(els_p4()[i].Pt(), scale);
+                }else if(fileType==2){
+                    leppt_tt->Fill(els_p4()[i].Pt(), scale);
                 }
                                 
                 if(els_p4()[i].Pt() < 20)
                     continue;
 
-                if(!isU50){
+                if(fileType==1){
                     lep_eta_o50->Fill(els_p4()[i].Eta(), scale);
                     lep_phi_o50->Fill(els_p4()[i].Phi(), scale);
-                }else{
+                }else if(fileType==0){
                     lep_eta_u50->Fill(els_p4()[i].Eta(), scale);
                     lep_phi_u50->Fill(els_p4()[i].Phi(), scale);
-                }                               
+                }else if(fileType==2){
+                    lep_phi_tt->Fill(els_p4()[i].Phi(), scale);
+                    lep_eta_tt->Fill(els_p4()[i].Eta(), scale);
+                }
             }
             for(int i=0; i<nMuonTotal; i++){
                 
-                if(!isU50){
+                if(fileType==1){
                     leppt_o50->Fill(mus_p4()[i].Pt(), scale);
-                }else{
+                }else if(fileType==0){
                     leppt_u50->Fill(mus_p4()[i].Pt(), scale);
+                }else if(fileType==2){
+                    leppt_tt->Fill(mus_p4()[i].Pt(), scale);
                 }
                 
                 if(mus_p4()[i].Pt() < 20)
                     continue;
 
-                if(!isU50){
+                if(fileType==1){
                     lep_eta_o50->Fill(mus_p4()[i].Eta(), scale);
                     lep_phi_o50->Fill(mus_p4()[i].Phi(), scale);
-                }else{
+                }else if(fileType==0){
                     lep_eta_u50->Fill(mus_p4()[i].Eta(), scale);
                     lep_phi_u50->Fill(mus_p4()[i].Phi(), scale);
+                }else if(fileType==2){
+                    lep_phi_tt->Fill(mus_p4()[i].Phi(), scale);
+                    lep_eta_tt->Fill(mus_p4()[i].Eta(), scale);
                 }                               
 
             }
@@ -271,10 +332,10 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
             for(unsigned int i=0; i<good.size(); i++){
                 for(unsigned int j=i+1; j<good.size(); j++){
                     double mass = (genps_p4()[good[i]]+genps_p4()[good[j]]).M();
-                    if(!isU50){
+                    if(fileType==1){
                         mLL_genps_o50->Fill(mass, scale);
                         mLL_genps_noscale_o50->Fill(mass, 1);                        
-                    }else{
+                    }else if(fileType==0){
                         mLL_genps_u50->Fill(mass, scale);
                         mLL_genps_noscale_u50->Fill(mass, 1);
                     }
@@ -288,10 +349,12 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
             int besthyp_cuts = -1;
             double bestpT_cuts = 0;
             for(int i = 0; i < nhyp; i++){
-                if(!isU50)
+                if(fileType==1)
                     mLL_reco_all_o50->Fill((hyp_ll_p4()[i]+hyp_lt_p4()[i]).M(), scale);
-                else
+                else if(fileType==0)
                     mLL_reco_all_u50->Fill((hyp_ll_p4()[i]+hyp_lt_p4()[i]).M(), scale);
+                else if(fileType==2)
+                    mLL_reco_all_tt2->Fill((hyp_ll_p4()[i]+hyp_lt_p4()[i]).M(), scale);                    
                
                 double totalpT = hyp_ll_p4()[i].Pt() + hyp_lt_p4()[i].Pt();
                 if(totalpT > bestpT_nocuts){
@@ -303,18 +366,18 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
                 if(hyp_ll_p4()[i].Pt()<20 || hyp_lt_p4()[i].Pt()<20)
                     continue;
                 
-                if(!isU50)
+                if(fileType==1)
                     mLL_reco_pT20_o50->Fill((hyp_ll_p4()[i]+hyp_lt_p4()[i]).M(), scale);
-                else
+                else if(fileType==0)
                     mLL_reco_pT20_u50->Fill((hyp_ll_p4()[i]+hyp_lt_p4()[i]).M(), scale);
                 
                 // opposite sign
                 if(hyp_ll_charge()[i] + hyp_lt_charge()[i] != 0)
                     continue;
                 
-                if(!isU50)
+                if(fileType==1)
                     mLL_reco_pT20_OS_o50->Fill((hyp_ll_p4()[i]+hyp_lt_p4()[i]).M(), scale);
-                else
+                else if(fileType==0)
                     mLL_reco_pT20_OS_u50->Fill((hyp_ll_p4()[i]+hyp_lt_p4()[i]).M(), scale);               
 
                 
@@ -333,15 +396,17 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
                 }
             }
             if(besthyp_cuts > -1){
-                if(!isU50)
+                if(fileType==1)
                     mLL_reco_pT20_OS_best_o50->Fill((hyp_ll_p4()[besthyp_cuts]+hyp_lt_p4()[besthyp_cuts]).M(), scale);
-                else
+                else if(fileType==0)
                     mLL_reco_pT20_OS_best_u50->Fill((hyp_ll_p4()[besthyp_cuts]+hyp_lt_p4()[besthyp_cuts]).M(), scale);
+                else if(fileType==2)
+                    mLL_reco_pT20_OS_best_tt2->Fill((hyp_ll_p4()[besthyp_cuts]+hyp_lt_p4()[besthyp_cuts]).M(), scale);
             } 
             if(besthyp_nocuts > -1){
-                if(!isU50)
+                if(fileType==1)
                     mLL_reco_best_o50->Fill((hyp_ll_p4()[besthyp_nocuts]+hyp_lt_p4()[besthyp_nocuts]).M(), scale);
-                else
+                else if(fileType==0)
                     mLL_reco_best_u50->Fill((hyp_ll_p4()[besthyp_nocuts]+hyp_lt_p4()[besthyp_nocuts]).M(), scale);
             } 
 
@@ -351,10 +416,15 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
 
             // pfmet
 
-            if(!isU50)
+            if(fileType==1)
                 pfmet_o50->Fill(evt_pfmet(),scale);
-            else
+            else if(fileType==0)
                 pfmet_u50->Fill(evt_pfmet(),scale);
+            else if(fileType==2)
+                pfmet_tt2->Fill(evt_pfmet(),scale);
+
+            // if(evt_pfmet() < 30)
+            //     continue;
 
             // njets, H_T, jet pT, nbtags, bjetpT
 
@@ -390,29 +460,39 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
                     if(isBtag)
                         nbtags++;
                 }
-                if(!isU50){
+                if(fileType==1){
                     jetpt_o50->Fill(pfjets_p4()[i].Pt(), scale);
                     if(isBtag)
                         bjetpt_o50->Fill(pfjets_p4()[i].Pt(), scale);                        
-                }else{
+                }else if(fileType==0){
                     jetpt_u50->Fill(pfjets_p4()[i].Pt(), scale);
                     if(isBtag)
                         bjetpt_u50->Fill(pfjets_p4()[i].Pt(), scale);                        
+                }else if(fileType==2){
+                    jetpt_tt2->Fill(pfjets_p4()[i].Pt(), scale);
+                    if(isBtag)
+                        bjetpt_tt2->Fill(pfjets_p4()[i].Pt(), scale);                                            
                 }
             }
 
-            if(!isU50){
+            if(fileType==1){
                 njets_o50->Fill(ngoodjets,scale);                
                 njets_jetid_o50->Fill(ngoodidjets,scale);                
                 nbtags_o50->Fill(nbtags,scale);                
                 if(ngoodjets > 0)
                     ht_o50->Fill(h_t,scale);
-            }else{
+            }else if(fileType==0){
                 njets_u50->Fill(ngoodjets,scale);
                 njets_jetid_u50->Fill(ngoodidjets,scale);
                 nbtags_u50->Fill(nbtags,scale);
                 if(ngoodjets > 0)
                     ht_u50->Fill(h_t,scale);
+            }else if(fileType==2){
+                njets_tt2->Fill(ngoodjets,scale);
+                njets_jetid_tt2->Fill(ngoodidjets, scale);
+                nbtags_tt2->Fill(nbtags, scale);
+                if(ngoodjets>0)
+                    ht_tt2->Fill(h_t,scale);
             }
 
         }
@@ -447,12 +527,15 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
     bkg.pop_back(); bkg.pop_back();
     bkg.push_back(mLL_reco_all_o50);
     bkg.push_back(mLL_reco_all_u50);
+    bkg.push_back(mLL_reco_all_tt2);
+    str.push_back("ttbar");
     dataMCplotMaker(null, bkg, str, "Dilepton Invariant Mass", "reco, all hypotheses", "--outputName mLL_reco_all.pdf --xAxisLabel M_{LL} --isLinear" );
 
     // mLL_reco_best
-    bkg.pop_back(); bkg.pop_back();
+    bkg.pop_back(); bkg.pop_back(); bkg.pop_back();
     bkg.push_back(mLL_reco_best_o50);
     bkg.push_back(mLL_reco_best_u50);
+    str.pop_back();
     dataMCplotMaker(null, bkg, str, "Dilepton Invariant Mass", "reco, best hypothesis", "--outputName mLL_reco_best.pdf --xAxisLabel M_{LL} --isLinear" );
 
     // mLL_reco_pT20
@@ -471,66 +554,78 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
     bkg.pop_back(); bkg.pop_back();
     bkg.push_back(mLL_reco_pT20_OS_best_o50);
     bkg.push_back(mLL_reco_pT20_OS_best_u50);
+    bkg.push_back(mLL_reco_pT20_OS_best_tt2);
+    str.push_back("ttbar");
     dataMCplotMaker(null, bkg, str, "Dilepton Invariant Mass", "reco, pT>20, OS, best hyp", "--outputName mLL_reco_pT20_OS_best.pdf --xAxisLabel M_{LL} --isLinear" );
 
     // pfmet
-    bkg.pop_back(); bkg.pop_back();
+    bkg.pop_back(); bkg.pop_back(); bkg.pop_back();
     bkg.push_back(pfmet_o50);
     bkg.push_back(pfmet_u50);
+    bkg.push_back(pfmet_tt2);
     dataMCplotMaker(null, bkg, str, "pfmet", "", "--outputName pfmet.pdf --xAxisLabel MET --isLinear" );
  
     // njets
-    bkg.pop_back(); bkg.pop_back();
+    bkg.pop_back(); bkg.pop_back(); bkg.pop_back();
     bkg.push_back(njets_o50);
     bkg.push_back(njets_u50);
+    bkg.push_back(njets_tt2);
     dataMCplotMaker(null, bkg, str, "njets", "pT>40, |eta|<2.4", "--outputName njets.pdf --xAxisLabel Njets --noXaxisUnit --setMinimum 100 --noDivisionLabel --nDivisions 10" );
 
     // njets_jetid
-    bkg.pop_back(); bkg.pop_back();
+    bkg.pop_back(); bkg.pop_back(); bkg.pop_back();
     bkg.push_back(njets_jetid_o50);
     bkg.push_back(njets_jetid_u50);
+    bkg.push_back(njets_jetid_tt2);
     dataMCplotMaker(null, bkg, str, "njets", "pT>40, |eta|<2.4, jet id", "--outputName njets_jetid.pdf --xAxisLabel Njets --noXaxisUnit --setMinimum 100 --noDivisionLabel --nDivisions 10" );
 
     // H_T
-    bkg.pop_back(); bkg.pop_back();
+    bkg.pop_back(); bkg.pop_back(); bkg.pop_back();
     bkg.push_back(ht_o50);
     bkg.push_back(ht_u50);
+    bkg.push_back(ht_tt2);
     dataMCplotMaker(null, bkg, str, "H_T", "jet pT>40", "--outputName H_T.pdf --xAxisLabel H_{T} --isLinear" );
 
     // jet pT
-    bkg.pop_back(); bkg.pop_back();
+    bkg.pop_back(); bkg.pop_back(); bkg.pop_back();
     bkg.push_back(jetpt_o50);
     bkg.push_back(jetpt_u50);
+    bkg.push_back(jetpt_tt2);
     dataMCplotMaker(null, bkg, str, "jet pT", "", "--outputName jetpT.pdf --xAxisLabel p_{T} --setMinimum 1000" );
 
     // lep pT
-    bkg.pop_back(); bkg.pop_back();
+    bkg.pop_back(); bkg.pop_back(); bkg.pop_back();
     bkg.push_back(leppt_o50);
     bkg.push_back(leppt_u50);
+    bkg.push_back(leppt_tt);
     dataMCplotMaker(null, bkg, str, "lepton pT", "", "--outputName leppT.pdf --xAxisLabel p_{T} --setMinimum 1000" );
 
     // lep eta
-    bkg.pop_back(); bkg.pop_back();
+    bkg.pop_back(); bkg.pop_back(); bkg.pop_back();
     bkg.push_back(lep_eta_o50);
     bkg.push_back(lep_eta_u50);
+    bkg.push_back(lep_eta_tt);
     dataMCplotMaker(null, bkg, str, "lepton eta", "pT>20", "--outputName lep_eta.pdf --xAxisLabel eta --noXaxisUnit --isLinear --noDivisionLabel" );
 
     // lep phi
-    bkg.pop_back(); bkg.pop_back();
+    bkg.pop_back(); bkg.pop_back(); bkg.pop_back();
     bkg.push_back(lep_phi_o50);
     bkg.push_back(lep_phi_u50);
+    bkg.push_back(lep_phi_tt);
     dataMCplotMaker(null, bkg, str, "lepton phi", "pT>20", "--outputName lep_phi.pdf --xAxisLabel phi --noXaxisUnit --isLinear --noDivisionLabel" );
 
     // nbtags
-    bkg.pop_back(); bkg.pop_back();
+    bkg.pop_back(); bkg.pop_back(); bkg.pop_back();
     bkg.push_back(nbtags_o50);
     bkg.push_back(nbtags_u50);
-    dataMCplotMaker(null, bkg, str, "nBtags", "pT>40", "--outputName nBtags.pdf --xAxisLabel nBtags --noXaxisUnit --setMinimum 10000 --noDivisionLabel --nDivisions 4" );
+    bkg.push_back(nbtags_tt2);
+    dataMCplotMaker(null, bkg, str, "nBtags", "pT>40", "--outputName nBtags.pdf --xAxisLabel nBtags --noXaxisUnit --setMinimum 1000 --noDivisionLabel --nDivisions 4" );
 
     // bjetpT
-    bkg.pop_back(); bkg.pop_back();
+    bkg.pop_back(); bkg.pop_back(); bkg.pop_back();
     bkg.push_back(bjetpt_o50);
     bkg.push_back(bjetpt_u50);
+    bkg.push_back(bjetpt_tt2);
     dataMCplotMaker(null, bkg, str, "b-jet pT", "", "--outputName bjetpT.pdf --xAxisLabel p_{T} --setMinimum 1000" );
  
 
