@@ -64,10 +64,17 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
     TCanvas *c = new TCanvas("c","",800,600);
     c->cd();
 
-    const char *json_file = "json_DCSONLY_Run2015B_mumu_snt.txt";
-    set_goodrun_file(json_file);
-
     TDirectory *rootdir = gDirectory->GetDirectory("Rint:");
+
+    bool doElectrons = true;
+    bool doMuons = false;
+
+    const char *json_file;
+    if(doMuons)
+        json_file = "json_DCSONLY_Run2015B_mumu_snt.txt";
+    if(doElectrons)
+        json_file = "json_DCSONLY_Run2015B_ee_snt.txt";
+    set_goodrun_file(json_file);
 
     // double muon
     TH1F *mLL_mumu_o50 = new TH1F("mLL_mumu_o50", "", 100,0,150);
@@ -145,9 +152,6 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
     TH1F *nbtags_data = new TH1F("nbtags_data", "", 5,-0.5,4.5);
     nbtags_data->SetDirectory(rootdir);
 
-    bool doElectrons = false;
-    bool doMuons = true;
-
     // Loop over events to Analyze
     unsigned int nEventsTotal = 0;
     unsigned int nEventsChain = chain->GetEntries();
@@ -218,7 +222,7 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
 
             // get the proper scale factors
             double scaleMuMu = 1, scaleEE = 1, scaleMuE = 1;
-            double lumMuMu = 0.020622, lumEE = 0.019899, lumMuE = 0.009169;
+            double lumMuMu = 0.023146, lumEE = 0.023293, lumMuE = 0.009169;
             if(fileType==0){
                 scaleMuMu = evt_scale1fb()*lumMuMu*totalU50events/loadedU50events;
                 scaleEE = evt_scale1fb()*lumEE*totalU50events/loadedU50events;
@@ -474,40 +478,6 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
         njets_data->Write();
         histos.Close();
     }
-
-    vector<TH1F*> bkg;
-    vector<string> str;
-
-    // double muon
-    bkg.push_back(mLL_mumu_o50);
-    bkg.push_back(mLL_mumu_u50);
-    bkg.push_back(mLL_mumu_ttb);
-    bkg.push_back(mLL_mumu_wpj);
-    str.push_back("DY (m_{LL}>50)");
-    str.push_back("DY (10<m_{LL}<50)");
-    str.push_back("ttbar");
-    str.push_back("W+Jets");
-    dataMCplotMaker(mLL_mumu_data, bkg, str, "Dimuon Invariant Mass", "", "--outputName mLL_mumu.pdf --xAxisLabel M\\mu\\mu --isLinear --lumi 9.2" );
-
-    // double electron
-    bkg.pop_back(); bkg.pop_back(); bkg.pop_back(); bkg.pop_back();
-    bkg.push_back(mLL_ee_o50);
-    bkg.push_back(mLL_ee_u50);
-    bkg.push_back(mLL_ee_ttb);
-    bkg.push_back(mLL_ee_wpj);
-    dataMCplotMaker(mLL_ee_data, bkg, str, "ee Invariant Mass", "", "--outputName mLL_ee.pdf --xAxisLabel M_{ee} --isLinear --lumi 7.6 --legendTextSize .025" );
-
-    // j/psi
-    bkg.pop_back(); bkg.pop_back(); bkg.pop_back(); bkg.pop_back();
-    bkg.push_back(mLL_jpsi_o50);
-    bkg.push_back(mLL_jpsi_u50);
-    bkg.push_back(mLL_jpsi_ttb);
-    bkg.push_back(mLL_jpsi_wpj);
-    dataMCplotMaker(mLL_jpsi_data, bkg, str, "\\mu\\mu Invariant Mass", "", "--outputName mLL_jpsi.pdf --xAxisLabel M\\mu\\mu --isLinear --lumi 9.2 --noOverflow --noDataMC" );
-
-    // Example Histograms
-    //samplehisto->Draw();
-    //c->Print("samplehisto.pdf");
 
     // return
     bmark->Stop("benchmark");
