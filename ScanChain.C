@@ -20,12 +20,19 @@
 #include "/home/users/bmarsh/CORE/MuonSelections.h"
 #include "/home/users/bmarsh/CORE/JetSelections.h"
 #include "/home/users/bmarsh/CORE/TriggerSelections.h"
+#include "/home/users/bmarsh/CORE/VertexSelections.h"
 
 // Tools
 #include "/home/users/bmarsh/Tools/goodrun.h"
 
 //nice plots
 #include "/home/users/bmarsh/Software/dataMCplotMaker/dataMCplotMaker.h"
+
+
+#define DOUBLE_MU 0
+#define DOUBLE_E 1
+#define MU_E 2
+
 
 using namespace std;
 using namespace tas;
@@ -57,6 +64,9 @@ int getFileType(const char* fname){
 
 int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
 
+    /* define the mode that you want to run */
+    const char doWhat = DOUBLE_MU;
+
     // Benchmark
     TBenchmark *bmark = new TBenchmark();
     bmark->Start("benchmark");
@@ -66,14 +76,13 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
 
     TDirectory *rootdir = gDirectory->GetDirectory("Rint:");
 
-    bool doElectrons = true;
-    bool doMuons = false;
-
     const char *json_file;
-    if(doMuons)
-        json_file = "json_DCSONLY_Run2015B_mumu_snt.txt";
-    if(doElectrons)
-        json_file = "json_DCSONLY_Run2015B_ee_snt.txt";
+    if(doWhat == DOUBLE_MU)
+        json_file = "/home/users/bmarsh/analysis/zproject/json_golden/golden_json_mumu_snt.txt";
+    if(doWhat == DOUBLE_E)
+        json_file = "/home/users/bmarsh/analysis/zproject/json_golden/golden_json_ee_snt.txt";
+    if(doWhat == MU_E)
+        json_file = "/home/users/bmarsh/analysis/zproject/json_golden/golden_json_mue_snt.txt";
     set_goodrun_file(json_file);
 
     // double muon
@@ -99,6 +108,18 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
     mLL_ee_wpj->SetDirectory(rootdir);
     TH1F *mLL_ee_data = new TH1F("mLL_ee_data", "", 100,0,150);
     mLL_ee_data->SetDirectory(rootdir);
+
+    // muon-electron
+    TH1F *mLL_mue_o50 = new TH1F("mLL_mue_o50", "", 50,0,250);
+    mLL_mue_o50->SetDirectory(rootdir);
+    TH1F *mLL_mue_u50 = new TH1F("mLL_mue_u50", "", 50,0,250);
+    mLL_mue_u50->SetDirectory(rootdir);
+    TH1F *mLL_mue_ttb = new TH1F("mLL_mue_ttb", "", 50,0,250);
+    mLL_mue_ttb->SetDirectory(rootdir);
+    TH1F *mLL_mue_wpj = new TH1F("mLL_mue_wpj", "", 50,0,250);
+    mLL_mue_wpj->SetDirectory(rootdir);
+    TH1F *mLL_mue_data = new TH1F("mLL_mue_data", "", 50,0,250);
+    mLL_mue_data->SetDirectory(rootdir);
 
     // find the J/Psi
     TH1F *mLL_jpsi_o50 = new TH1F("mLL_jpsi_o50", "", 120,0,12);
@@ -151,6 +172,42 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
     nbtags_wpj->SetDirectory(rootdir);
     TH1F *nbtags_data = new TH1F("nbtags_data", "", 5,-0.5,4.5);
     nbtags_data->SetDirectory(rootdir);
+
+    // leading jet pt
+    TH1F *jetpt_o50 = new TH1F("jetpt_o50", "", 80,0,200);
+    jetpt_o50->SetDirectory(rootdir);
+    TH1F *jetpt_u50 = new TH1F("jetpt_u50", "", 80,0,200);
+    jetpt_u50->SetDirectory(rootdir);
+    TH1F *jetpt_ttb = new TH1F("jetpt_ttb", "", 80,0,200);
+    jetpt_ttb->SetDirectory(rootdir);
+    TH1F *jetpt_wpj = new TH1F("jetpt_wpj", "", 80,0,200);
+    jetpt_wpj->SetDirectory(rootdir);
+    TH1F *jetpt_data = new TH1F("jetpt_data", "", 80,0,200);
+    jetpt_data->SetDirectory(rootdir);
+
+    // h_t
+    TH1F *ht_o50 = new TH1F("ht_o50", "", 100,40,340);
+    ht_o50->SetDirectory(rootdir);
+    TH1F *ht_u50 = new TH1F("ht_u50", "", 100,40,340);
+    ht_u50->SetDirectory(rootdir);
+    TH1F *ht_ttb = new TH1F("ht_ttb", "", 100,40,340);
+    ht_ttb->SetDirectory(rootdir);
+    TH1F *ht_wpj = new TH1F("ht_wpj", "", 100,40,340);
+    ht_wpj->SetDirectory(rootdir);
+    TH1F *ht_data = new TH1F("ht_data", "", 100,40,340);
+    ht_data->SetDirectory(rootdir);
+
+    // nvertices
+    TH1F *nvertices_o50 = new TH1F("nvertices_o50", "", 31,-0.5,30.5);
+    nvertices_o50->SetDirectory(rootdir);
+    TH1F *nvertices_u50 = new TH1F("nvertices_u50", "", 31,-0.5,30.5);
+    nvertices_u50->SetDirectory(rootdir);
+    TH1F *nvertices_ttb = new TH1F("nvertices_ttb", "", 31,-0.5,30.5);
+    nvertices_ttb->SetDirectory(rootdir);
+    TH1F *nvertices_wpj = new TH1F("nvertices_wpj", "", 31,-0.5,30.5);
+    nvertices_wpj->SetDirectory(rootdir);
+    TH1F *nvertices_data = new TH1F("nvertices_data", "", 31,-0.5,30.5);
+    nvertices_data->SetDirectory(rootdir);
 
     // Loop over events to Analyze
     unsigned int nEventsTotal = 0;
@@ -222,7 +279,7 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
 
             // get the proper scale factors
             double scaleMuMu = 1, scaleEE = 1, scaleMuE = 1;
-            double lumMuMu = 0.023146, lumEE = 0.023293, lumMuE = 0.009169;
+            double lumMuMu = 0.021282, lumEE = 0.021282, lumMuE = 0.021282;
             if(fileType==0){
                 scaleMuMu = evt_scale1fb()*lumMuMu*totalU50events/loadedU50events;
                 scaleEE = evt_scale1fb()*lumEE*totalU50events/loadedU50events;
@@ -256,7 +313,7 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
             int besthyp = -1;
             
             //dimuon events
-            if(doMuons && passHLTTriggerPattern("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ")){
+            if(doWhat == DOUBLE_MU && passHLTTriggerPattern("HLT_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL_DZ")){
                 int nhyp = hyp_p4().size();
                 besthyp = -1;
                 double bestpT = 0;
@@ -306,7 +363,7 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
             }
 
             //double electron events
-            if(doElectrons && passHLTTriggerPattern("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ")){
+            if(doWhat == DOUBLE_E && passHLTTriggerPattern("HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ")){
                 int nhyp = hyp_p4().size();
                 besthyp = -1;
                 double bestpT = 0;
@@ -317,7 +374,7 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
                     double pT1 = fmin(hyp_ll_p4()[i].Pt(),hyp_lt_p4()[i].Pt());
                     double pT2 = fmax(hyp_ll_p4()[i].Pt(),hyp_lt_p4()[i].Pt());
                     // momentum cut
-                    if(pT1<20 || pT2<30)
+                    if(pT1<30 || pT2<20)
                         continue;
                     
                     // opposite sign
@@ -342,20 +399,83 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
                     else if(fileType==2)
                         mLL_ee_ttb->Fill((hyp_ll_p4()[besthyp]+hyp_lt_p4()[besthyp]).M(), scaleEE);
                     else if(fileType==3)
-                        mLL_ee_wpj->Fill((hyp_ll_p4()[besthyp]+hyp_lt_p4()[besthyp]).M(), 1);
+                        mLL_ee_wpj->Fill((hyp_ll_p4()[besthyp]+hyp_lt_p4()[besthyp]).M(), scaleEE);
                     else if(fileType==4)
                         mLL_ee_data->Fill((hyp_ll_p4()[besthyp]+hyp_lt_p4()[besthyp]).M(), 1);
+                }
+            }
+
+            double pTeCut = 0;
+            double pTmuCut = 0;
+            //muon-electron events
+            if(doWhat == MU_E && passHLTTriggerPattern("HLT_Mu17_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL")){
+                pTeCut = 20;
+                pTmuCut = 20;
+            }
+            if(doWhat == MU_E && passHLTTriggerPattern("HLT_Mu8_TrkIsoVVL_Ele17_CaloIdL_TrackIdL_IsoVL")){
+                pTeCut = 25;
+                pTmuCut = 10;
+            }
+            if(doWhat == MU_E && pTeCut>0){
+                int nhyp = hyp_p4().size();
+                besthyp = -1;
+                double bestpT = 0;
+                bool llIsMuon = false;
+                for(int i = 0; i < nhyp; i++){
+                    if(abs(hyp_ll_id()[i])==11 && abs(hyp_lt_id()[i])==13)
+                        llIsMuon = false;
+                    else if(abs(hyp_ll_id()[i])==13 && abs(hyp_lt_id()[i])==11)
+                        llIsMuon = true;
+                    else
+                        continue;
+                    
+                    double pTmu = llIsMuon ? hyp_ll_p4()[i].Pt() : hyp_lt_p4()[i].Pt();
+                    double pTe  = llIsMuon ? hyp_lt_p4()[i].Pt() : hyp_ll_p4()[i].Pt();
+                    // momentum cut
+                    if(pTmu<pTmuCut || pTe<pTeCut)
+                        continue;
+                    
+                    // opposite sign
+                    if(hyp_ll_charge()[i] + hyp_lt_charge()[i] != 0)
+                        continue;
+                    
+                    if(llIsMuon && (!muonID(hyp_ll_index()[i], STOP_medium_v2) || !electronID(hyp_lt_index()[i], STOP_medium_v2)))
+                        continue;
+                    if(!llIsMuon && (!electronID(hyp_ll_index()[i], STOP_medium_v2) || !muonID(hyp_lt_index()[i], STOP_medium_v2)))
+                        continue;
+
+                    
+                    double totalpT = hyp_ll_p4()[i].Pt() + hyp_lt_p4()[i].Pt();
+                    if(totalpT > bestpT){
+                        bestpT = totalpT;
+                        besthyp = i;
+                    }
+                }
+                if(besthyp > -1){
+                    if(fileType==1)
+                        mLL_mue_o50->Fill((hyp_ll_p4()[besthyp]+hyp_lt_p4()[besthyp]).M(), scaleMuE);
+                    else if(fileType==0)
+                        mLL_mue_u50->Fill((hyp_ll_p4()[besthyp]+hyp_lt_p4()[besthyp]).M(), scaleMuE);
+                    else if(fileType==2)
+                        mLL_mue_ttb->Fill((hyp_ll_p4()[besthyp]+hyp_lt_p4()[besthyp]).M(), scaleMuE);
+                    else if(fileType==3)
+                        mLL_mue_wpj->Fill((hyp_ll_p4()[besthyp]+hyp_lt_p4()[besthyp]).M(), scaleMuE);
+                    else if(fileType==4)
+                        mLL_mue_data->Fill((hyp_ll_p4()[besthyp]+hyp_lt_p4()[besthyp]).M(), 1);
                 }
             }
             
             if(besthyp==-1)
                 continue;
 
+
             double scale;
-            if(doMuons)
+            if(doWhat == DOUBLE_MU)
                 scale = scaleMuMu;
-            if(doElectrons)
+            if(doWhat == DOUBLE_E)
                 scale = scaleEE;
+            if(doWhat == MU_E)
+                scale = scaleMuE;
 
             if(fileType==0)
                 pfmet_u50->Fill(evt_pfmet(),scale);
@@ -369,10 +489,30 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
                 pfmet_data->Fill(evt_pfmet(),1);
 
 
+            int ntotalvertices = vtxs_position().size();
+            int ngoodvertices = 0;
+            for(int i=0; i<ntotalvertices; i++){
+                if(isGoodVertex(i))
+                    ngoodvertices++;
+            }
+
+            if(fileType==0)
+                nvertices_u50->Fill(ngoodvertices,scale);
+            else if(fileType==1)
+                nvertices_o50->Fill(ngoodvertices,scale);
+            else if(fileType==2)
+                nvertices_ttb->Fill(ngoodvertices,scale);
+            else if(fileType==3)
+                nvertices_wpj->Fill(ngoodvertices,scale);
+            else if(fileType==4)
+                nvertices_data->Fill(ngoodvertices,1);
+            
+
             int njetstotal = pfjets_p4().size();
             int ngoodjets = 0;
             int nbtags = 0;
             double h_t = 0;
+            double maxjetpt = 0;
 
             for(int i =0; i<njetstotal; i++){
 
@@ -388,7 +528,13 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
                 if(dR1 < 0.4 || dR2 < 0.4)
                     continue;                
 
+                if(fabs(jetEta)>2.4)
+                    continue;
+
                 bool isBtag = (pfjets_pfCombinedInclusiveSecondaryVertexV2BJetTag()[i] > 0.814);                
+
+                if(pfjets_p4()[i].Pt() > maxjetpt)
+                    maxjetpt = pfjets_p4()[i].Pt();
 
                 if(pfjets_p4()[i].Pt() >= 40){
                     if(fabs(pfjets_p4()[i].Eta())<2.4){
@@ -403,18 +549,38 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
             if(fileType==0){
                 njets_u50->Fill(ngoodjets, scale);
                 nbtags_u50->Fill(nbtags, scale);
+                if(maxjetpt>0)
+                    jetpt_u50->Fill(maxjetpt, scale);
+                if(ngoodjets > 0)
+                    ht_u50->Fill(h_t, scale);
             }else if(fileType==1){
                 njets_o50->Fill(ngoodjets, scale);
                 nbtags_o50->Fill(nbtags, scale);
+                if(maxjetpt>0)
+                    jetpt_o50->Fill(maxjetpt, scale);
+                if(ngoodjets > 0)
+                    ht_o50->Fill(h_t, scale);
             }else if(fileType==2){
                 njets_ttb->Fill(ngoodjets, scale);
                 nbtags_ttb->Fill(nbtags, scale);
+                if(maxjetpt>0)
+                    jetpt_ttb->Fill(maxjetpt, scale);
+                if(ngoodjets > 0)
+                    ht_ttb->Fill(h_t, scale);
             }else if(fileType==3){
                 njets_wpj->Fill(ngoodjets, scale);
                 nbtags_wpj->Fill(nbtags, scale);
+                if(maxjetpt>0)
+                    jetpt_wpj->Fill(maxjetpt, scale);
+                if(ngoodjets > 0)
+                    ht_wpj->Fill(h_t, scale);
             }else if(fileType==4){
                 njets_data->Fill(ngoodjets, 1);
                 nbtags_data->Fill(nbtags, 1);
+                if(maxjetpt>0)
+                    jetpt_data->Fill(maxjetpt, 1);
+                if(ngoodjets > 0)
+                    ht_data->Fill(h_t, 1);
             }
  
         }
@@ -429,7 +595,7 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
     }
  
 
-    if(doMuons){
+    if(doWhat == DOUBLE_MU){
         TFile histos ("mLL_mumu_histos.root", "RECREATE");
         mLL_mumu_u50->Write();
         mLL_mumu_o50->Write();
@@ -457,9 +623,24 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
         nbtags_ttb->Write();
         nbtags_wpj->Write();
         nbtags_data->Write();
+        jetpt_u50->Write();
+        jetpt_o50->Write();
+        jetpt_ttb->Write();
+        jetpt_wpj->Write();
+        jetpt_data->Write();
+        ht_u50->Write();
+        ht_o50->Write();
+        ht_ttb->Write();
+        ht_wpj->Write();
+        ht_data->Write();
+        nvertices_u50->Write();
+        nvertices_o50->Write();
+        nvertices_ttb->Write();
+        nvertices_wpj->Write();
+        nvertices_data->Write();
         histos.Close();
     }
-    if(doElectrons){
+    if(doWhat == DOUBLE_E){
         TFile histos ("mLL_ee_histos.root", "RECREATE");
         mLL_ee_u50->Write();
         mLL_ee_o50->Write();
@@ -476,6 +657,60 @@ int ScanChain( TChain* chain, bool fast = true, int nEvents = -1) {
         njets_ttb->Write();
         njets_wpj->Write();
         njets_data->Write();
+        nbtags_u50->Write();
+        nbtags_o50->Write();
+        nbtags_ttb->Write();
+        nbtags_wpj->Write();
+        nbtags_data->Write();
+        jetpt_u50->Write();
+        jetpt_o50->Write();
+        jetpt_ttb->Write();
+        jetpt_wpj->Write();
+        jetpt_data->Write();
+        ht_u50->Write();
+        ht_o50->Write();
+        ht_ttb->Write();
+        ht_wpj->Write();
+        ht_data->Write();
+        nvertices_u50->Write();
+        nvertices_o50->Write();
+        nvertices_ttb->Write();
+        nvertices_wpj->Write();
+        nvertices_data->Write();
+        histos.Close();
+    }
+    if(doWhat == MU_E){
+        TFile histos ("mLL_mue_histos.root", "RECREATE");
+        mLL_mue_u50->Write();
+        mLL_mue_o50->Write();
+        mLL_mue_ttb->Write();
+        mLL_mue_wpj->Write();
+        mLL_mue_data->Write();
+        pfmet_u50->Write();
+        pfmet_o50->Write();
+        pfmet_ttb->Write();
+        pfmet_wpj->Write();
+        pfmet_data->Write();
+        njets_u50->Write();
+        njets_o50->Write();
+        njets_ttb->Write();
+        njets_wpj->Write();
+        njets_data->Write();
+        nbtags_u50->Write();
+        nbtags_o50->Write();
+        nbtags_ttb->Write();
+        nbtags_wpj->Write();
+        nbtags_data->Write();
+        jetpt_u50->Write();
+        jetpt_o50->Write();
+        jetpt_ttb->Write();
+        jetpt_wpj->Write();
+        jetpt_data->Write();
+        ht_u50->Write();
+        ht_o50->Write();
+        ht_ttb->Write();
+        ht_wpj->Write();
+        ht_data->Write();
         histos.Close();
     }
 
